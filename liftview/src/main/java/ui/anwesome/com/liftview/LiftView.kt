@@ -4,6 +4,7 @@ package ui.anwesome.com.liftview
  * Created by anweshmishra on 22/04/18.
  */
 
+import android.app.Activity
 import android.view.MotionEvent
 import android.view.View
 import android.graphics.*
@@ -148,5 +149,11 @@ class LiftView (ctx : Context) : View(ctx) {
         }
     }
 
-
+    companion object {
+        fun create(activity : Activity) : LiftView {
+            val view : LiftView = LiftView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
