@@ -123,4 +123,28 @@ class LiftView (ctx : Context) : View(ctx) {
         }
     }
 
+    data class Renderer (var view : LiftView) {
+
+        private val liftMover : LiftMover = LiftMover(0)
+
+        private val animator : Animator = Animator(view)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#212121"))
+            liftMover.draw(canvas, paint)
+            animator.animate {
+                liftMover.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            liftMover.startUpdating {
+                animator.start()
+            }
+        }
+    }
+
+
 }
