@@ -39,7 +39,7 @@ class LiftView (ctx : Context) : View(ctx) {
             if (delay == 0) {
                 scales[j] += dir * 0.1f
                 if (Math.abs(scales[j] - prevScale) > 1) {
-                    scales[j] = prevScale + dir 
+                    scales[j] = prevScale + dir
                     delay++
                 }
             } else if (delay == MAX_DELAY) {
@@ -99,14 +99,15 @@ class LiftView (ctx : Context) : View(ctx) {
         fun draw(canvas : Canvas, paint : Paint) {
             val w : Float = canvas.width.toFloat()
             val h : Float = canvas.height.toFloat()
+            val STROKE_SIZE : Float = Math.min(w, h)/ 60
             val rSize : Float = Math.min(w, h)/10
-            paint.strokeWidth = Math.min(w, h)/ 60
+            paint.strokeWidth = STROKE_SIZE
             paint.strokeCap = Paint.Cap.ROUND
             canvas.save()
             canvas.translate(w/2, 0f)
             paint.style = Paint.Style.STROKE
             paint.color = Color.parseColor("#00BCD4")
-            val yUpdated : Float = (h - 2 * rSize) * (1 - this.state.scales[1])
+            val yUpdated : Float = STROKE_SIZE/2 + ((h - STROKE_SIZE) - 2 * rSize) * (1 - this.state.scales[1])
             canvas.save()
             canvas.translate(0f, yUpdated)
             canvas.drawRect(-rSize/2, 0f, rSize/2, 2 * rSize, paint)
@@ -123,7 +124,7 @@ class LiftView (ctx : Context) : View(ctx) {
                 canvas.restore()
             }
             canvas.restore()
-            canvas.drawLine(0f, 0f, 0f, yUpdated, paint)
+            canvas.drawLine(0f, STROKE_SIZE/2, 0f, yUpdated, paint)
             canvas.restore()
         }
 
