@@ -73,7 +73,7 @@ class LiftView (ctx : Context) : View(ctx) {
 
         fun start() {
             if (!animated) {
-                animated = false
+                animated = true
                 view.postInvalidate()
             }
         }
@@ -97,20 +97,20 @@ class LiftView (ctx : Context) : View(ctx) {
             canvas.translate(w/2, 0f)
             paint.style = Paint.Style.STROKE
             paint.color = Color.parseColor("#00BCD4")
-            val yUpdated : Float = (h - rSize) * (1 - this.state.scales[1])
+            val yUpdated : Float = (h - 2 * rSize) * (1 - this.state.scales[1])
             canvas.save()
             canvas.translate(0f, yUpdated)
-            canvas.drawRect(-rSize/2, 0f, rSize/2, rSize, paint)
+            canvas.drawRect(-rSize/2, 0f, rSize/2, 2 * rSize, paint)
             paint.style = Paint.Style.FILL
             paint.color = Color.parseColor("#0097A7")
             val barW1 : Float = (rSize/2) * this.state.scales[0]
             val barW2 : Float = -(rSize/2) * this.state.scales[2]
-            val getX1 : (Int) -> Float = {i -> -(rSize/2)  + (rSize - (barW1 + barW2) * this.state.scales[1]) * i }
-            val getW : () -> Float = { (barW1 + barW2) * this.state.scales[1] }
+            val getX1 : (Int) -> Float = {i -> -(rSize/2)  + (rSize - (barW1 + barW2)) * i }
+            val getW : () -> Float = { (barW1 + barW2) }
             for (i in 0..1) {
                 canvas.save()
                 canvas.translate(getX1(i), 0f)
-                canvas.drawRect(0f, 0f, getW(), rSize, paint)
+                canvas.drawRect(0f, 0f, getW(), 2 * rSize, paint)
                 canvas.restore()
             }
             canvas.restore()
