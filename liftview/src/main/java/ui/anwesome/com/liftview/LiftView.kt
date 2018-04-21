@@ -82,4 +82,45 @@ class LiftView (ctx : Context) : View(ctx) {
         }
     }
 
+    data class LiftMover (var i : Int, private val state : State = State()) {
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            val w : Float = canvas.width.toFloat()
+            val h : Float = canvas.height.toFloat()
+            val rSize : Float = Math.min(w, h)/10
+            paint.strokeWidth = Math.min(w, h)/ 60
+            paint.strokeCap = Paint.Cap.ROUND
+            canvas.save()
+            canvas.translate(w/2, 0f)
+            paint.style = Paint.Style.STROKE
+            paint.color = Color.parseColor("#00BCD4")
+            val yUpdated : Float = (h - rSize) * (1 - this.state.scales[1])
+            canvas.save()
+            canvas.translate(0f, yUpdated)
+            canvas.drawRect(-rSize/2, 0f, rSize/2, rSize, paint)
+            paint.style = Paint.Style.FILL
+            paint.color = Color.parseColor("#0097A7")
+            val barW1 : Float = (rSize/2) * this.state.scales[0]
+            val barW2 : Float = -(rSize/2) * this.state.scales[2]
+            val getX1 : (Int) -> Float = {i -> -(rSize/2)  + (rSize - (barW1 + barW2) * this.state.scales[1]) * i }
+            val getW : () -> Float = { (barW1 + barW2) * this.state.scales[1] }
+            for (i in 0..1) {
+                canvas.save()
+                canvas.translate(getX1(i), 0f)
+                canvas.drawRect(0f, 0f, getW(), rSize, paint)
+                canvas.restore()
+            }
+            canvas.restore()
+            canvas.restore()
+        }
+
+        fun update(stopcb : (Float) -> Unit) {
+            state.update(stopcb)
+        }
+
+        fun startUpdating(startcb : () -> Unit) {
+            state.startUpdating(startcb)
+        }
+    }
+
 }
