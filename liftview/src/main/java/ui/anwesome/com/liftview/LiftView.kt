@@ -114,6 +114,7 @@ class LiftView (ctx : Context) : View(ctx) {
                 canvas.restore()
             }
             canvas.restore()
+            canvas.drawLine(0f, 0f, 0f, yUpdated, paint)
             canvas.restore()
         }
 
